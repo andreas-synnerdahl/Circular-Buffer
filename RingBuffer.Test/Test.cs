@@ -12,11 +12,16 @@ namespace OrderedJobs.Test
         [TestCase(2, ExpectedResult = 2)]
         public int RegisterOneTest(int value)
         {
-            var buffer = new CircularBuffer<int>(3);
+            var buffer = new CircularBuffer<int>(3);            
             Assert.That(buffer.Count(), Is.Zero);
-            buffer.Add(value);
+
+            buffer.Add(value);            
             Assert.That(buffer.Count(), Is.EqualTo(1));
-            return buffer.Take();
+
+            var actual = buffer.Take();
+            Assert.That(buffer.Count(), Is.Zero);
+
+            return actual;
         }
         
         [TestCase(2, 3, ExpectedResult =new int[] {2, 3})]
@@ -62,6 +67,27 @@ namespace OrderedJobs.Test
         {
             var buffer = new CircularBuffer<int>(size);
             return buffer.Size();
+        }
+
+
+        [TestCase(1, new int[] { 1, 2, 3, 4, 5 }, ExpectedResult = 5)]
+        [TestCase(2, new int[] { 1, 2, 3, 4, 5 }, ExpectedResult = 4)]
+        [TestCase(3, new int[] { 1, 2, 3, 4, 5 }, ExpectedResult = 3)]
+        public int TestOverWrite(int size, int[] values)
+        {
+            var expectedCount = Math.Min(size, values.Length);
+            var buffer = new CircularBuffer<int>(size);
+
+            foreach (var value in values)
+                buffer.Add(value);
+
+            Assert.That(buffer.Count(), Is.EqualTo(expectedCount));
+
+            var actual = buffer.Take();
+
+            Assert.That(buffer.Count(), Is.EqualTo(expectedCount-1));
+
+            return actual;
         }
     }
 }

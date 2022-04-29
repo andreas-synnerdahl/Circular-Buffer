@@ -25,7 +25,7 @@ namespace OrderedJobs
 
         public int Count()
         {
-            throw new NotImplementedException();
+            return _write - _read;
         }
 
         public int Size()
