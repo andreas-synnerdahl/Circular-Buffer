@@ -7,15 +7,20 @@ namespace OrderedJobs
     public class CircularBuffer<T>
         : ICircularBuffer<T>
     {
-        private T _value;
-        public CircularBuffer(int v)
+        private int _read;
+        private int _write;
+
+        private T[] _values;
+
+        public CircularBuffer(int size)
         {
-            
+            _values = new T[size];
         }
 
         public void Add(T value)
         {
-            _value = value;
+            _values[_write] = value;
+            _write = (_write + 1) % _values.Length;
         }
 
         public int Count()
@@ -30,7 +35,7 @@ namespace OrderedJobs
 
         public T Take()
         {
-            return _value;
+            return _values[_read++];
         }
     }
 }
