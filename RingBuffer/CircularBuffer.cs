@@ -30,12 +30,14 @@ namespace OrderedJobs
 
         public int Size()
         {
-            throw new NotImplementedException();
+            return _values.Length;
         }
 
         public T Take()
         {
-            return _values[_read++];
+            var value =  _values[_read];
+            _read = (_read + 1) % _values.Length;
+            return value;
         }
     }
 }

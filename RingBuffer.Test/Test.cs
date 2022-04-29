@@ -13,7 +13,9 @@ namespace OrderedJobs.Test
         public int RegisterOneTest(int value)
         {
             var buffer = new CircularBuffer<int>(3);
+            Assert.That(buffer.Count(), Is.Zero);
             buffer.Add(value);
+            Assert.That(buffer.Count(), Is.EqualTo(1));
             return buffer.Take();
         }
         
@@ -52,6 +54,14 @@ namespace OrderedJobs.Test
             buffer.Add(c);
 
             return new int[] { buffer.Take(), buffer.Take() }; ;
+        }
+
+        [TestCase(2, ExpectedResult =2)]
+        [TestCase(8, ExpectedResult = 8)]
+        public int TestSize(int size)
+        {
+            var buffer = new CircularBuffer<int>(size);
+            return buffer.Size();
         }
     }
 }
