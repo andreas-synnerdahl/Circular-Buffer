@@ -7,13 +7,15 @@ namespace OrderedJobs
     public class CircularBuffer<T>
         : ICircularBuffer<T>
     {
+        private T _value;
         public CircularBuffer(int v)
         {
+            
         }
 
         public void Add(T value)
         {
-            throw new NotImplementedException();
+            _value = value;
         }
 
         public int Count()
@@ -28,7 +30,7 @@ namespace OrderedJobs
 
         public T Take()
         {
-            throw new NotImplementedException();
+            return _value;
         }
     }
 }

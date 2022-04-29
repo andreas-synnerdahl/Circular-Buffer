@@ -7,20 +7,24 @@ namespace OrderedJobs.Test
 {
     public class Test
     {
-        private ICircularBuffer<T> target;
 
-        [SetUp]
-        public void Setup()
+
+        [TestCase(2, ExpectedResult = 2)]
+        public int RegisterOneTest(int value)
         {
-            target = new CircularBuffer<int>(10);
+            var buffer = new CircularBuffer<int>(3);
+            buffer.Add(value);
+            return buffer.Take();
         }
-
-        [TestCase('a', ExpectedResult = "a")]
-        [TestCase('b', ExpectedResult = "b")]
-        [TestCase('x', ExpectedResult = "x")]
-        public string RegisterOneTest(char value)
+        
+        [TestCase(2, 3, ExpectedResult =new int[] {2, 3})]
+        public int[] RegisterOneTest(int a, int b)
         {
-            throw new NotImplementedException()
+            var buffer = new CircularBuffer<int>(3);
+            buffer.Add(a);
+            buffer.Add(b);
+
+            return new int[] {buffer.Take(), buffer.Take()};
         }
     }
 }
